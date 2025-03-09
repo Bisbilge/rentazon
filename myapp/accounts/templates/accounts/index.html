@@ -1,12 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş Yap veya Kayıt Ol</title>
+    <style>
+        /* Sayfa genel stili */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #dbeafe, #93c5fd);
+            text-align: center;
+            color: #1e3a8a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Ana kutu */
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* Başlık */
+        h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        /* Açıklama metni */
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* Butonlar */
+        .btn {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            margin: 5px;
+        }
+
+        /* Buton hover efekti */
+        .btn:hover {
+            background-color: #1e40af;
+        }
+    </style>
 </head>
 <body>
-    <h2>Hoşgeldiniz!</h2>
-    <p>Lütfen giriş yapın veya yeni hesap oluşturun.</p>
-    <a href="{% url 'login' %}">Giriş Yap</a> |
-    <a href="{% url 'register' %}">Kayıt Ol</a>
+    <div class="container">
+        <h2>Hoşgeldiniz!</h2>
+        <p>Lütfen giriş yapın veya yeni hesap oluşturun.</p>
+        <a href="{% url 'login' %}" class="btn">Giriş Yap</a>
+        <a href="{% url 'register' %}" class="btn">Kayıt Ol</a>
+    </div>
 </body>
 </html>
