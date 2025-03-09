@@ -143,3 +143,5 @@ EMAIL_HOST_PASSWORD = 'zxas sdld kllm cbbh'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
+# settings.py
+
