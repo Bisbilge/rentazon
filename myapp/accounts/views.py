@@ -13,18 +13,43 @@ from .forms import RegisterForm  # Kendi kayıt formumuz
 def home_view(request):
     return render(request, 'accounts/home.html')
 
+
+
+
+
+
 # Giriş Görünümü
 def login_view(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        username = request.POST.get('username')  # Formdan gelen kullanıcı adı
+        password = request.POST.get('password')  # Formdan gelen şifre
+        user = authenticate(request, username=username, password=password)  # Kullanıcıyı doğrula
+        
         if user is not None:
-            login(request, user)
-            return redirect('home')  # Ana sayfaya yönlendir
+            login(request, user)  # Kullanıcıyı giriş yaptır
+            return redirect('home')  # Ana sayfaya yönlendir (URL adını ihtiyacına göre değiştir)
         else:
             return render(request, 'accounts/login.html', {'error': 'Geçersiz kullanıcı adı veya şifre'})
-    return render(request, 'accounts/login.html')
+
+    return render(request, 'accounts/login.html')  # GET isteği için giriş formunu göster
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Kayıt Görünümü
 def register_view(request):
