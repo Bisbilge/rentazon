@@ -1,65 +1,14 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ana Sayfa</title>
-    <style>
-        /* Sayfa genel stili */
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #dbeafe, #93c5fd);
-            color: #1e3a8a;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+{% extends "base.html" %}
 
-        /* Ana kutu */
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-        }
-
-        /* Başlık */
-        h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        /* Çıkış yap butonu */
-        button {
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease;
-        }
-
-        /* Buton hover efekti */
-        button:hover {
-            background-color: #1e40af;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Hoş Geldin, {{ user.username }}</h1>
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Çıkış Yap</button>
-        </form>
-    </div>
-</body>
-</html>
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="content-block">
+            <h1>Hoşgeldin, {{ user.username }}!</h1>
+            <a href="/logout/" class="btn">Çıkış Yap</a>
+        </div>
+    {% else %}
+        <div class="content-block">
+            <h1>Hoşgeldiniz! Lütfen giriş yapın.</h1>
+        </div>
+    {% endif %}
+{% endblock %}

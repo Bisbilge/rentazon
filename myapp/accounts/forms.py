@@ -1,44 +1,36 @@
 from django import forms
-from .models import User
+from django.contrib.auth.forms import UserCreationForm
+from .models import CustomUser
 
-class RegisterForm(forms.ModelForm):
-    # Şifreyi girme alanı (gizli şifre alanı)
-    password1 = forms.CharField(
-        label="Şifre",  # Kullanıcıya gösterilecek etiket
-        widget=forms.PasswordInput,  # Şifreyi gizlemek için
-        min_length=8  # Şifre minimum 8 karakter olmalı
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True, label="E-posta")
+    phone_number = forms.CharField(
+        max_length=20,
+        required=False,
+        label="Telefon Numarası"
     )
-
-    # Şifreyi onaylamak için ikinci alan (gizli şifre alanı)
-    password2 = forms.CharField(
-        label="Şifreyi Onayla",  # Kullanıcıya gösterilecek etiket
-        widget=forms.PasswordInput  # Şifreyi gizlemek için
+    address = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 2}),
+        required=False,
+        label="Adres"
     )
+    city = forms.CharField(max_length=100, required=False, label="Şehir")
+    country = forms.CharField(max_length=100, required=False, label="Ülke")
 
     class Meta:
-        model = User  # Bu form User modeli ile ilişkili
-        fields = ['name', 'email', 'phone_number', 'address', 'city', 'country']  # Formda yer alacak alanlar
+        model = CustomUser  # Güncellenmiş model
+        fields = ['username', 'email', 'phone_number', 'address', 'city', 'country']
 
-    # E-posta adresinin benzersiz olduğunu kontrol eden fonksiyon
+    # E-posta benzersizliği kontrolü
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if User.objects.filter(email=email).exists():  # Eğer bu e-posta zaten var ise
-            raise forms.ValidationError("Bu e-posta adresi zaten kullanılıyor!")  # Hata mesajı
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("Bu e-posta adresi zaten kullanılıyor!")
         return email
 
-    # Şifrelerin eşleşip eşleşmediğini kontrol eden fonksiyon
-    def clean(self):
-        cleaned_data = super().clean()  # Varsayılan temizleme işlemi
-        password1 = cleaned_data.get("password1")
-        password2 = cleaned_data.get("password2")
-
-        if password1 and password2 and password1 != password2:  # Eğer şifreler eşleşmiyorsa
-            raise forms.ValidationError("Şifreler uyuşmuyor!")  # Hata mesajı
-        return cleaned_data
-
-    # Telefon numarasının formatını kontrol eden fonksiyon
+    # Telefon numarası kontrolü
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get("phone_number")
-        if phone_number and len(phone_number) < 10:  # Eğer telefon numarası 10 haneli değilse
-            raise forms.ValidationError("Telefon numarası geçersiz! Lütfen geçerli bir telefon numarası girin.")
+        if phone_number and len(phone_number) < 10:
+            raise forms.ValidationError("Telefon numarası geçersiz! En az 10 karakter olmalıdır.")
         return phone_number
